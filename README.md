@@ -19,3 +19,36 @@ A terceira parte do projeto consiste em desenvolver um fluxo de autenticação s
 1. Acesso temporário às credenciais e endpoints necessários: https://share.1password.com/s#GhIZQee25bW6Refdfk2m35dKHQs3pQI4VsMmehmXy6Q
 1. Quem commitar credencial vai perder ponto!
 
+
+Queries de exemplo para gerar o token JWT:
+
+```http
+# Autenticando só com o client secret
+POST ${IDP_SERVER}/realms/rider-api/protocol/openid-connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+client_id=demo
+&client_secret=${CLIENT_SECRET}
+&grant_type=client_credentials
+
+
+# Autenticando com credenciais do usuário para adicionar os roles no JWT
+POST ${IDP_SERVER}/realms/rider-api/protocol/openid-connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+client_id=demo
+&client_secret=${CLIENT_SECRET}
+&grant_type=password
+&username=${DEMO_USER}
+&password=${DEMO_PASSWORD}
+
+# (re)Autenticando com refresh token
+POST ${IDP_SERVER}/realms/rider-api/protocol/openid-connect/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+client_id=demo
+&client_secret=${CLIENT_SECRET}
+&refresh_token=${REFRESH_TOKEN}
+&grant_type=refresh_token
+
+```
